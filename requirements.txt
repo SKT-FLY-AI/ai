@@ -1,0 +1,6 @@
+git
+git+https://github.com/facebookresearch/segment-anything.git
+ipykernel
+matplotlib
+opencv-python
+# apt-get install -y libgl1-mesa-glx libglib2.0-0
