@@ -41,6 +41,7 @@ def get_bbox_coords(dataset_dir):
             # Convert mask to tensor
             mask_tensor = transform(mask).squeeze().numpy()
             # Get bounding box
+            print(mask_path)
             bbox = get_bounding_box(mask_tensor)
 
             bbox_coords[key] = np.array(bbox)

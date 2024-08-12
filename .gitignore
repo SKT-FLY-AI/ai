@@ -167,3 +167,5 @@ cython_debug/
 /dataset
 /Reddit-Crawler
 *.pth
+*.jpg
+*.png

@@ -11,7 +11,7 @@ from utils.plot import plot_mean_losses
 
 if __name__ == "__main__" :
     # Preprocess
-    dataset_dir = '/root/ai/dataset/poo_1-599/train/'
+    dataset_dir = '/root/ai/dataset/mask_1513/'
     bbox_coords = get_bbox_coords(dataset_dir)
     ground_truth_masks = get_ground_truth_masks(bbox_coords, dataset_dir)
     
@@ -38,7 +38,7 @@ if __name__ == "__main__" :
     # loss_fn = torch.nn.BCELoss()
     keys = list(bbox_coords.keys())
     # Finetune
-    num_epochs = 100
+    num_epochs = 300
     losses = []
 
     for epoch in range(num_epochs):
