@@ -1,3 +1,5 @@
+fastapi
+pydantic
 git
 git+https://github.com/facebookresearch/segment-anything.git
 ipykernel
@@ -7,3 +9,7 @@ pycocotools
 matplotlib 
 onnxruntime 
 onnx
+
+# git clone https://github.com/open-mmlab/mmpretrain.git
+# cd mmpretrain
+# pip install -U openmim && mim install -e .
