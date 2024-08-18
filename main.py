@@ -40,7 +40,7 @@ async def analyze_image(file: UploadFile = File(...)):
         mean_val_bgr, _ = calAvgColor(masked_img)
         isBlood, _ = checkBlood(mean_val_bgr, masked_img, thrshold_blood)
         type = 4
-        result = {"poo_type" : type, "poo_color" : rgb2hex(mean_val_bgr), "poo_isBlood" : isBlood}
+        result = {"poo_type" : type, "poo_color" : rgb2hex(mean_val_bgr), "poo_blood" : isBlood}
         return result
     except Exception as e:
         print(e)
