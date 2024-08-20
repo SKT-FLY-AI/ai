@@ -1,7 +1,8 @@
 fastapi
+gitpython
 pydantic
-git
-git+https://github.com/facebookresearch/segment-anything.git
+gdown
+segment-anything-py
 ipykernel
 matplotlib
 opencv-python
@@ -9,7 +10,8 @@ pycocotools
 matplotlib 
 onnxruntime 
 onnx
-
+mmengine
+wandb # Train전용
 # git clone https://github.com/open-mmlab/mmpretrain.git
 # cd mmpretrain
 # pip install -U openmim && mim install -e .

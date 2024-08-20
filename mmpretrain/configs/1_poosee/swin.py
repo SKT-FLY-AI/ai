@@ -5,7 +5,7 @@ _base_ = [
     '../_base_/default_runtime.py'
 ]
 
-data_root = '/root/ai/dataset/classification_only_img/'
+data_root = '/root/ai/dataset/classification_aug_apply/'
 model = dict(
     backbone=dict(
         frozen_stages=2,
@@ -64,5 +64,5 @@ find_unused_parameters=True
 # auto resume
 resume = False
 # load_from = '/root/ai/mmpretrain/work_dirs/swin_0818_aug/epoch_120.pth'
-work_dir = "work_dirs/swin_seg_aug_only_img"
+work_dir = "work_dirs/swin_nopipeline_aug"
 # logg  https://mmengine.readthedocs.io/en/latest/get_started/15_minutes.html

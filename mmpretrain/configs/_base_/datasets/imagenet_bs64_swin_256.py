@@ -51,7 +51,7 @@ test_pipeline = [
     dict(type='CenterCrop', crop_size=256),
     dict(type='PackInputs'),
 ]
-data_root = '/root/ai/dataset/classification_apply/'
+data_root = '/root/ai/dataset/classification_aug_apply/'
 train_dataloader = dict(
     batch_size=64,
     num_workers=5,
