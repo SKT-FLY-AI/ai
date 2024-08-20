@@ -62,7 +62,7 @@ train_dataloader = dict(
         data_prefix='train',    # The `data_root` is the data_prefix directly.
         classes=['1', '2', '3', '4', '5', '6', '7'],
         with_label=True,
-        pipeline=test_pipeline
+        pipeline=train_pipeline
     ),
     # dataset=dict(
     #     type=dataset_type,

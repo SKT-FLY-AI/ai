@@ -10,7 +10,7 @@ model = dict(
     ),
     head=dict(
         type='LinearClsHead',
-        num_classes=1000,
+        num_classes=7,
         in_channels=640,
         loss=dict(type='LabelSmoothLoss', label_smooth_val=0.2),
         init_cfg=None,
