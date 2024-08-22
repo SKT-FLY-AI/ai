@@ -11,7 +11,7 @@ from utils.plot import plot_mean_losses
 
 if __name__ == "__main__" :
     # Preprocess
-    dataset_dir = '/root/ai/dataset/mask_1513/'
+    dataset_dir = '/root/ai/dataset/puppy_poo/dataset_seg/'
     bbox_coords = get_bbox_coords(dataset_dir)
     ground_truth_masks = get_ground_truth_masks(bbox_coords, dataset_dir)
     
@@ -87,8 +87,8 @@ if __name__ == "__main__" :
         print(f'Mean loss: {mean(epoch_losses)}')
         # 매 5 에폭마다 모델 저장
         if (epoch + 1) % 10 == 0:
-            save_path = f'/root/ai/sam/result/sam_model_epoch_{epoch+1}.pth'
+            save_path = f'/root/ai/segmenatation/result/poopy_sam/sam_model_epoch_{epoch+1}.pth'
             torch.save(sam_model.state_dict(), save_path)
             print(f'Model saved to {save_path}')
-    plot_mean_losses(mean, losses, '/root/ai/sam/result')
+    plot_mean_losses(mean, losses, '/root/ai/segmenatation/result')
     
