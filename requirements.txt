@@ -1,4 +1,4 @@
-fastapi
+fastapi[all]
 gitpython
 pydantic
 gdown
@@ -11,7 +11,10 @@ matplotlib
 onnxruntime 
 onnx
 mmengine
-wandb # Train전용
+wandb 
+scikit-learn
+python-multipart
+# Train전용
 # git clone https://github.com/open-mmlab/mmpretrain.git
 # cd mmpretrain
 # pip install -U openmim && mim install -e .

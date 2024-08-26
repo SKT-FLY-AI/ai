@@ -5,7 +5,7 @@ _base_ = [
     '../_base_/default_runtime.py',
 ]
 
-data_root = '/root/ai/dataset/classification_aug_apply'
+data_root = '/root/ai/dataset/puppy_poo/dataset_cls_train_aug_apply'
 
 
 train_dataloader = dict(

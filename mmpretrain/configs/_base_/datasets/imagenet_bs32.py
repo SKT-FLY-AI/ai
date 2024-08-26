@@ -1,7 +1,10 @@
 # dataset settings
-dataset_type = 'ImageNet'
+dataset_type = 'CustomDataset'
+data_root = '/root/ai/dataset/puppy_poo/dataset_cls_train_aug_apply_retype'
+classes = ["diarrhea", "normal", "softmix", "lackofwater"]
+metainfo = dict(classes=classes)
 data_preprocessor = dict(
-    num_classes=1000,
+    num_classes=4,
     # RGB format normalization parameters
     mean=[123.675, 116.28, 103.53],
     std=[58.395, 57.12, 57.375],
@@ -24,28 +27,50 @@ test_pipeline = [
 ]
 
 train_dataloader = dict(
-    batch_size=32,
+    batch_size=16,
     num_workers=5,
     dataset=dict(
+        metainfo=metainfo,
         type=dataset_type,
-        data_root='data/imagenet',
-        split='train',
+        data_root=data_root,
+        ann_file='',       # We assume you are using the sub-folder format without ann_file
+        data_prefix='train',    # The `data_root` is the data_prefix directly.
+        classes=classes,
+        with_label=True,
         pipeline=train_pipeline),
     sampler=dict(type='DefaultSampler', shuffle=True),
 )
 
 val_dataloader = dict(
-    batch_size=32,
+    batch_size=16,
     num_workers=5,
     dataset=dict(
+        metainfo=metainfo,
         type=dataset_type,
-        data_root='data/imagenet',
-        split='val',
+        data_root=data_root,
+        ann_file='',       # We assume you are using the sub-folder format without ann_file
+        data_prefix='valid',    # The `data_root` is the data_prefix directly.
+        classes=classes,
+        with_label=True,
         pipeline=test_pipeline),
     sampler=dict(type='DefaultSampler', shuffle=False),
 )
-val_evaluator = dict(type='Accuracy', topk=(1, 5))
+
+test_dataloader = dict(
+    batch_size=16,
+    dataset=dict(
+        metainfo=metainfo,
+        type=dataset_type,
+        data_root=data_root,
+        ann_file='',       # We assume you are using the sub-folder format without ann_file
+        data_prefix='test',    # The `data_root` is the data_prefix directly.
+        classes=classes,
+        with_label=True,
+        pipeline=test_pipeline)
+)
+
+val_evaluator = dict(type='Accuracy', topk=(1, ))
 
 # If you want standard test, please manually configure the test dataset
-test_dataloader = val_dataloader
+# test_dataloader = val_dataloader
 test_evaluator = val_evaluator

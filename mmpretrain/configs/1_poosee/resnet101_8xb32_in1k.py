@@ -4,7 +4,7 @@ _base_ = [
 ]
 
 
-data_root = '/root/ai/dataset/classification_aug_apply/'
+data_root = "/root/ai/dataset/puppy_poo/dataset_cls_train_aug_apply_retype"
 
 # runtime settings
 # train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=100)
