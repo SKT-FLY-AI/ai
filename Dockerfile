@@ -10,4 +10,8 @@ RUN apt-get -y install git
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt install -y libgl1-mesa-glx libglib2.0-0
 RUN cd mmpretrain && pip install -U openmim && mim install -e .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# CMD로 쉘 명령어를 사용하여 두 개의 스크립트를 순차적으로 실행
+CMD ["bash", "-c", "python download_weights.py && python main.py"]
+

@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -26,8 +27,8 @@ def load_model():
     print("Segmentation Model loaded successfully!")
     
     global cls_model
-    config_path = "/root/ai/weights/resnet101_8xb32_in1k.py"
-    ckpt_path = "/root/ai/weights/resnet_261.pth"
+    config_path = "weights/resnet101_8xb32_in1k.py"
+    ckpt_path = "weights/resnet_261.pth"
     device = "cuda" if torch.cuda.is_available() else "cpu"
     cls_model = ImageClassificationInferencer(model=config_path, pretrained=ckpt_path, device=device)
     print("Classification Model loaded successfully!")
@@ -51,14 +52,13 @@ async def analyze_image(file: UploadFile = File(...)):
         whitebalanced_image, (quantized_image, color_group) = processor.process_image()
         print(color_group)
         print("processor successfully!")
-        
-        result_type = cls_model(inputs=quantized_image, show_dir="/root/ai/dummy")[0]
+        os.makedirs("dummy", exist_ok=True)
+        result_type = cls_model(inputs=quantized_image, show_dir="dummy")[0]
         print(result_type)
         pred_class, pred_score = result_type["pred_class"], round(result_type["pred_score"], 4)
         
         # type = 4
         result = {"poo_type" : pred_class, "poo_color" : color_group}
-        return whitebalanced_image, quantized_image, color_group, masked_img, result
         return result
     except Exception as e:
         print(e)
@@ -66,5 +66,5 @@ async def analyze_image(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8888, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
 # uvicorn main:app --reload --host=0.0.0.0 --port=8000
