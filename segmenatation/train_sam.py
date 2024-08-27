@@ -12,6 +12,7 @@ from utils.plot import plot_mean_losses
 if __name__ == "__main__" :
     # Preprocess
     dataset_dir = '/root/ai/dataset/puppy_poo/dataset_seg/'
+
     bbox_coords = get_bbox_coords(dataset_dir)
     ground_truth_masks = get_ground_truth_masks(bbox_coords, dataset_dir)
     
@@ -91,4 +92,5 @@ if __name__ == "__main__" :
             torch.save(sam_model.state_dict(), save_path)
             print(f'Model saved to {save_path}')
     plot_mean_losses(mean, losses, '/root/ai/segmenatation/result')
+
     
