@@ -14,5 +14,6 @@ mmengine
 wandb 
 scikit-learn
 python-multipart
-scikit-image
+scikit-image==0.24.0
 gdown
+scipy==1.14.0

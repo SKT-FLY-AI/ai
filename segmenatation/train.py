@@ -8,6 +8,8 @@ import numpy as np
 from statistics import mean
 from torch.nn.functional import threshold, normalize
 from utils.plot import plot_mean_losses
+from models.sam_decoder import SAM_Decoder
+import os
 
 if __name__ == "__main__" :
     # Preprocess
@@ -23,23 +25,25 @@ if __name__ == "__main__" :
     print(device)
 
     # Load pre-trained SAM
-    sam_model = sam_model_registry[model_type](checkpoint=checkpoint)
-    sam_model.to(device)
-    # 학습 모드 시작
-    sam_model.train()
+    sam_encoder = sam_model_registry[model_type](checkpoint=checkpoint)
+    sam_encoder.to(device)
     
-    transformed_data, transform = preprocess(sam_model, bbox_coords, device, dataset_dir)
+    sam_decoder = SAM_Decoder(sam_encoder = sam_encoder.image_encoder, sam_preprocess = sam_encoder.preprocess)
+    sam_decoder = sam_decoder.to(device)
+    # 학습 모드 시작
+    sam_decoder.train()
+    
+    transformed_data, transform = preprocess(sam_encoder, bbox_coords, device, dataset_dir)
     
     # Set up the optimizer, hyperparameter tuning will improve performance here
-    lr = 1e-4
-    wd = 0
-    optimizer = torch.optim.Adam(sam_model.mask_decoder.parameters(), lr=lr, weight_decay=wd)
+    lr = 0.001
+    optimizer = torch.optim.Adam(sam_decoder.parameters(), lr=lr)
 
-    loss_fn = torch.nn.MSELoss()
-    # loss_fn = torch.nn.BCELoss()
+    # loss_fn = torch.nn.MSELoss()
+    loss_fn = torch.nn.BCELoss()
     keys = list(bbox_coords.keys())
     # Finetune
-    num_epochs = 300
+    num_epochs = 100
     losses = []
 
     for epoch in range(num_epochs):
@@ -52,27 +56,27 @@ if __name__ == "__main__" :
 
             # No grad here as we don't want to optimise the encoders
             with torch.no_grad():
-                image_embedding = sam_model.image_encoder(input_image)
+                image_embedding = sam_encoder.image_encoder(input_image)
 
                 prompt_box = bbox_coords[k]
                 box = transform.apply_boxes(prompt_box, original_image_size)
                 box_torch = torch.as_tensor(box, dtype=torch.float, device=device)
                 box_torch = box_torch[None, :]
 
-                sparse_embeddings, dense_embeddings = sam_model.prompt_encoder(
+                sparse_embeddings, dense_embeddings = sam_encoder.prompt_encoder(
                     points=None,
                     boxes=box_torch,
                     masks=None,
                 )
-            low_res_masks, iou_predictions = sam_model.mask_decoder(
+            low_res_masks, iou_predictions = sam_encoder.mask_decoder(
                 image_embeddings=image_embedding,
-                image_pe=sam_model.prompt_encoder.get_dense_pe(),
+                image_pe=sam_encoder.prompt_encoder.get_dense_pe(),
                 sparse_prompt_embeddings=sparse_embeddings,
                 dense_prompt_embeddings=dense_embeddings,
                 multimask_output=False,
             )
 
-            upscaled_masks = sam_model.postprocess_masks(low_res_masks, input_size, original_image_size).to(device)
+            upscaled_masks = sam_encoder.postprocess_masks(low_res_masks, input_size, original_image_size).to(device)
             binary_mask = normalize(threshold(upscaled_masks, 0.0, 0))
 
             gt_mask_resized = torch.from_numpy(np.resize(ground_truth_masks[k], (1, 1, ground_truth_masks[k].shape[0], ground_truth_masks[k].shape[1]))).to(device)
@@ -88,8 +92,9 @@ if __name__ == "__main__" :
         print(f'Mean loss: {mean(epoch_losses)}')
         # 매 5 에폭마다 모델 저장
         if (epoch + 1) % 10 == 0:
-            save_path = f'/root/ai/segmenatation/result/poopy_sam/sam_model_epoch_{epoch+1}.pth'
-            torch.save(sam_model.state_dict(), save_path)
+            torch.save(sam_decoder.state_dict(), os.path.join(save_path, "sam_enc_custom_decoder.pt"))
+            save_path = f'/root/ai/segmenatation/result/poopy_sam/sam_model_epoch_{epoch+1}.pt'
+            torch.save(sam_encoder.state_dict(), save_path)
             print(f'Model saved to {save_path}')
     plot_mean_losses(mean, losses, '/root/ai/segmenatation/result')
 
