@@ -33,7 +33,7 @@ if __name__ == "__main__":
     weights_name = 'pc_weights.zip'
 
     # 폴더 내에 파일이 이미 존재하는지 확인
-    if os.path.exists(weights_save_folder) and os.listdir("weights"):
+    if os.path.exists(weights_save_folder + weights_name) and os.listdir("weights"):
         print("Weights folder already contains files. Skipping download.")
     else:
         # 폴더가 없으면 생성

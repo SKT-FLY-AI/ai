@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import requests
 import torch
-from segmenatation.predict_plsam import model_load, predict
+from segmenatation.predict_sam import model_load, predict
 from mmpretrain.apis import ImageClassificationInferencer
 from classification.kmeans import ImageProcessor, rgb_to_hex
 from PIL import Image
