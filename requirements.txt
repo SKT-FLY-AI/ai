@@ -1,5 +1,8 @@
-git
-git+https://github.com/facebookresearch/segment-anything.git
+fastapi[all]
+gitpython
+pydantic
+gdown
+segment-anything-py
 ipykernel
 matplotlib
 opencv-python
@@ -7,3 +10,9 @@ pycocotools
 matplotlib 
 onnxruntime 
 onnx
+mmengine
+wandb 
+scikit-learn
+python-multipart
+scikit-image
+gdown

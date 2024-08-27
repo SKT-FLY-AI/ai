@@ -164,8 +164,11 @@ cython_debug/
 /weights
 /segment-anything
 /lang-segment-anything
-/dataset
 /Reddit-Crawler
 *.pth
 *.jpg
 *.png
+*.zip
+*.csv
+*.txt
+
