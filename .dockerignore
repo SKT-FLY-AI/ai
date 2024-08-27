@@ -1,3 +1,5 @@
 dataset
 weights
 mmpretrain/work_dirs
+*.zip
+&.pth

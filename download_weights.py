@@ -28,17 +28,17 @@ def extract_Zip(zip_path, output_path):
 if __name__ == "__main__":
     google_path = 'https://drive.google.com/uc?id='
 
-    weights_save_folder = "weights/"
+    weights_save_folder = "/ai/"
     weights = '190gVtsvpkB6obW1p36Abns48LR1fWW1l'
     weights_name = 'pc_weights.zip'
 
     # 폴더 내에 파일이 이미 존재하는지 확인
-    if os.path.exists(weights_save_folder) and os.listdir(weights_save_folder):
+    if os.path.exists(weights_save_folder) and os.listdir("weights"):
         print("Weights folder already contains files. Skipping download.")
     else:
         # 폴더가 없으면 생성
-        if not os.path.exists(weights_save_folder):
-            os.makedirs(weights_save_folder)
+        # if not os.path.exists(weights_save_folder):
+        #     os.makedirs(weights_save_folder)
 
         # 다운로드 및 압축 해제
         download_Zip(google_path + weights, weights_save_folder + weights_name)
